@@ -1,0 +1,107 @@
+##############################
+# Unity Project .gitignore   #
+##############################
+
+# ========== #
+# Unity Core #
+# ========== #
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+Recordings/
+
+# Unity Package Cache (generated)
+Library/PackageCache/
+
+# ========================= #
+# Crash Reports & Lockfiles #
+# ========================= #
+
+sysinfo.txt
+*.stackdump
+*.dmp
+*.crash
+*.pid
+*.seed
+*.log
+
+# Avoid locking Unity
+*.booproj
+*.pidb
+*.suo
+
+# ================================== #
+# Visual Studio / VSCode / JetBrains #
+# ================================== #
+
+# IDE settings
+.vscode/
+.idea/
+
+# Solution/project files (Unity regenerates these)
+*.csproj
+*.unityproj
+*.sln
+*.sln*
+*.suo
+*.user
+*.userprefs
+
+# VS Generated
+.vs/
+
+# ================================================= #
+# Platform-specific and Generated Build Artifacts   #
+# ================================================= #
+
+*.apk
+*.aab
+*.app
+*.ipa
+*.exe
+*.dll
+*.pdb
+*.mdb
+*.so
+*.dylib
+
+# macOS junk
+.DS_Store
+.DS_Store?
+._*
+
+# Windows junk
+Thumbs.db
+desktop.ini
+
+# =============================== #
+# Unity Asset Store and Packages  #
+# =============================== #
+
+# Keep the Packages folder, ignore internal cache files
+Packages/*-lock.json
+Packages/packages-lock.json
+
+# Ignore temporary package metadata folders
+**/com.unity.*.tmp/
+**/com.unity.*.log/
+
+# ================== #
+# Shader Compilation  #
+# ================== #
+*.shadercache
+*.computeShader.cache
+
+# Burst (DOTS)
+**/burst-*/
+
+
+##############################
+# END OF FILE               #
+##############################

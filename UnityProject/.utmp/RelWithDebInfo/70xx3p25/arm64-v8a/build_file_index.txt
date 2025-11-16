@@ -1,0 +1,2 @@
+C:\Users\shurh\ITB\love-Harry-Potter-Github\UnityProject\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\shurh\ITB\love-Harry-Potter-Github\UnityProject\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

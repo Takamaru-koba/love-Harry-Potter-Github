@@ -1,0 +1,10 @@
+# ninja log v5
+74	2891	7849569804951431	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	69e4c31db64851bf
+92	2912	7849569805137902	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	a1124a95210dd553
+17	2951	7849569805616832	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5883f4fa5db995d9
+133	2984	7849569805914871	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	7f2c3b632e93e34
+42	3098	7849569807039565	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	a1c2d04cab9af45a
+109	3372	7849569809852219	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	579677538163b952
+58	3391	7849569810058529	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	af864a5644510c6e
+1	3519	7849569811286832	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	9d88d0e003987214
+3519	3758	7849569813754632	C:/Users/shurh/ITB/love-Harry-Potter-Github/UnityProject/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/70xx3p25/obj/arm64-v8a/libgame.so	e45a8cbc0adc51cc

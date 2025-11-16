@@ -3,6 +3,7 @@ using UnityEngine;
 public class ProjectileFireball : MonoBehaviour
 {
     public GameObject rh;
+    public ProjectileSpell projSpellRef;
 
     public Gradient[] chargeGradients = new Gradient[3]; //Empty, 1, 2, 3
     public float[] chargeRadii = new float[3];
@@ -22,8 +23,9 @@ public class ProjectileFireball : MonoBehaviour
     //     this.transform.position = rh.transform.position + new Vector3(0, 0.1f, 0.05f);
     // }
 
-    public void Setup(int lvl)
+    public void Setup(int lvl, ProjectileSpell psr)
     {
+        projSpellRef = psr;
         var col = ps.colorOverLifetime;
         col.enabled = true;
         col.color = chargeGradients[lvl - 1];
@@ -31,5 +33,16 @@ public class ProjectileFireball : MonoBehaviour
         shape.radius = chargeRadii[lvl - 1];
 
 
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Debug.Log("Projectile hit enemy!");
+            Destroy(other.gameObject);
+            projSpellRef.RegisterEnemyDeath();
+            Destroy(this.gameObject);
+        }
     }
 }

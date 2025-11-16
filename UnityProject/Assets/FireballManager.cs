@@ -23,7 +23,7 @@ public class FireballManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = rh.transform.position + new Vector3(0, 0.1f, 0.05f);
+        this.transform.position = rh.transform.position + new Vector3(0, 0.1f, 0f);
     }
 
     

@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class EchoManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class EchoManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = rh.transform.position + new Vector3(0, 0f, 0.1f);
+        this.transform.position = rh.transform.position + rh.transform.forward * 0.1f;
+        this.transform.eulerAngles = rh.transform.eulerAngles;
     }
 }

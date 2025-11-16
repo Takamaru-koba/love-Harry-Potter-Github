@@ -10,6 +10,8 @@ public class ProjectileSpell : MonoBehaviour
     private int chargeLvl;
     private bool isReloading;
 
+    public EnemyManager EMRef;
+
     public Transform projSpawn;
     public GameObject R_wrist_ref;
     public GameObject projPrefab;
@@ -41,8 +43,9 @@ public class ProjectileSpell : MonoBehaviour
             projSpawn = R_wrist_ref.transform;
             GameObject proj = Instantiate(projPrefab, projSpawn);
             proj.transform.SetParent(null);
+            Destroy(proj, 5f);
 
-            proj.GetComponent<ProjectileFireball>().Setup(chargeLvl);
+            proj.GetComponent<ProjectileFireball>().Setup(chargeLvl, this);
             proj.GetComponent<Rigidbody>().linearVelocity = projSpawn.forward * speed;
             chargeLvl -= 1;
             fireballManagerRef.UpdateChargeLvl(chargeLvl);
@@ -51,6 +54,11 @@ public class ProjectileSpell : MonoBehaviour
     public void StopPoint()
     {
         hasFired = false;
+    }
+
+    public void RegisterEnemyDeath()
+    {
+        EMRef.RegisterEnemyDeath();
     }
 
     public void Prime()

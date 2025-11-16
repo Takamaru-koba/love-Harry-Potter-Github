@@ -1,76 +1,103 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
-/// <summary>
-/// Continuous locomotion driven by hand poses instead of thumbsticks.
-/// Call the public methods from your gesture events to start/stop movement.
-/// </summary>
-[AddComponentMenu("XR/Locomotion/Gesture Continuous Move Provider")]
-public class GestureContinuousMoveProvider : ContinuousMoveProvider
+namespace UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning
 {
-    public enum HandMoveState
+    [AddComponentMenu("XR/Locomotion/Gesture Continuous Turn Provider")]
+    public class GestureContinuousTurnProvider : ContinuousTurnProvider
     {
-        Still,
-        MoveForward,
-        MoveBackward
+        public SingleMovementLocker lockerRef;
+
+        [Header("Gesture-based turn state")]
+        [SerializeField]
+        [Tooltip("If true, this provider ignores thumbstick input and uses gesture flags instead.")]
+        bool m_UseGestures = true;
+
+        bool m_IsTurningLeft;
+        bool m_IsTurningRight;
+
+        #region Gesture Callbacks
+
+        public void StartTurnLeft()
+        {
+            // If we are moving, ignore turn start.
+            if (lockerRef != null && lockerRef.AreWeMoving())
+                return;
+
+            m_IsTurningLeft = true;
+            m_IsTurningRight = false;
+        }
+
+        public void StopTurnLeft()
+        {
+            m_IsTurningLeft = false;
+        }
+
+        public void StartTurnRight()
+        {
+            // If we are moving, ignore turn start.
+            if (lockerRef != null && lockerRef.AreWeMoving())
+                return;
+
+            m_IsTurningRight = true;
+            m_IsTurningLeft = false;
+        }
+
+        public void StopTurnRight()
+        {
+            m_IsTurningRight = false;
+        }
+
+        public enum GestureTurnDirection
+        {
+            None,
+            Left,
+            Right
+        }
+
+        public void SetGestureTurnDirection(GestureTurnDirection direction)
+        {
+            // Honor the movement lock here too.
+            if (lockerRef != null && lockerRef.AreWeMoving())
+            {
+                m_IsTurningLeft = false;
+                m_IsTurningRight = false;
+                return;
+            }
+
+            m_IsTurningLeft = direction == GestureTurnDirection.Left;
+            m_IsTurningRight = direction == GestureTurnDirection.Right;
+        }
+
+        #endregion
+
+        /// <inheritdoc />
+        protected override float GetTurnAmount(Vector2 input)
+        {
+            if (!m_UseGestures)
+                return base.GetTurnAmount(input);
+
+            // HARD LOCK: if we are moving, DO NOT TURN.
+            if (lockerRef != null && lockerRef.AreWeMoving())
+            {
+                m_IsTurningLeft = false;
+                m_IsTurningRight = false;
+                return 0f;
+            }
+
+            float direction = 0f;
+
+            if (m_IsTurningLeft && !m_IsTurningRight)
+                direction = -1f; // left
+            else if (m_IsTurningRight && !m_IsTurningLeft)
+                direction = 1f;  // right
+            else
+                direction = 0f;
+
+            if (Mathf.Approximately(direction, 0f))
+                return 0f;
+
+            return direction * turnSpeed * Time.deltaTime;
+        }
     }
-
-    [Header("Gesture Movement Settings")]
-    [Tooltip("Virtual stick magnitude for forward/backward movement (1 = full stick).")]
-    [Range(0f, 1f)]
-    public float gestureMagnitude = 1f;
-
-    [Tooltip("Current gesture-driven movement state (for debugging).")]
-    public HandMoveState currentState = HandMoveState.Still;
-
-    // This acts like the thumbstick input vector that ContinuousMoveProvider expects.
-    Vector2 _gestureInput = Vector2.zero;
-
-    #region Gesture Callbacks (hook these from your pose system)
-
-    /// <summary>
-    /// Call when the 'move forward' pose is detected / held.
-    /// </summary>
-    public void BeginMoveForward()
-    {
-        currentState = HandMoveState.MoveForward;
-        _gestureInput = new Vector2(0f, gestureMagnitude); // stick up
-    }
-
-    /// <summary>
-    /// Call when the 'move backward' pose is detected / held.
-    /// </summary>
-    public void BeginMoveBackward()
-    {
-        currentState = HandMoveState.MoveBackward;
-        _gestureInput = new Vector2(0f, -gestureMagnitude); // stick down
-    }
-
-    /// <summary>
-    /// Call when you want to stop movement (neutral pose).
-    /// </summary>
-    public void StopMoving()
-    {
-        currentState = HandMoveState.Still;
-        _gestureInput = Vector2.zero;
-    }
-
-    #endregion
-
-    /// <summary>
-    /// Override ContinuousMoveProvider's move computation to use our
-    /// gesture-driven virtual stick instead of controller input.
-    /// </summary>
-    protected override Vector3 ComputeDesiredMove(Vector2 ignoredInputFromBase)
-    {
-        // Completely ignore the thumbstick input that ContinuousMoveProvider would read,
-        // and instead use our gesture vector that gets updated by the callbacks above.
-        return base.ComputeDesiredMove(_gestureInput);
-    }
-
-    // protected override void OnDisable()
-    // {
-    //     base.OnDisable();
-    //     StopMoving(); // safety reset
-    // }
 }
